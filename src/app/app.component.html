@@ -1,25 +1,15 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <div style="text-align:center">
-  <h1>
+  <h1 class="display-4">
     {{ title }}
   </h1>
 </div>
-<div class="container">
+<div class="container-fluid">
   <ngb-tabset>
-    <ngb-tab title="Simple">
+    <ngb-tab title="Chat">
       <ng-template ngbTabContent>
         <!-- Chat Box -->
         <app-chat-form></app-chat-form>
-      </ng-template>
-    </ngb-tab>
-    <ngb-tab>
-      <ng-template ngbTabTitle><b>Fancy</b> title</ng-template>
-      <ng-template ngbTabContent>
-        <p>This is the content of the second tab!</p>
-        <p><ngb-progressbar type="success" [value]="25"></ngb-progressbar></p>
-        <p><ngb-progressbar type="info" [value]="50"></ngb-progressbar></p>
-        <p><ngb-progressbar type="warning" [value]="75"></ngb-progressbar></p>
-        <p><ngb-progressbar type="danger" [value]="100"></ngb-progressbar></p>
       </ng-template>
     </ngb-tab>
   </ngb-tabset>
