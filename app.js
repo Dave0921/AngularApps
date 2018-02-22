@@ -4,9 +4,16 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
-const port = 4300;
+let msgArray = [];
+
+const port = 4200;
 
 app.use(express.static(path.join(__dirname, 'dist')));
+
+// get chat logs
+app.get('/api/chat',(req, res)=>{
+    res.json(msgArray);
+});
 
 io.on('connection', (socket)=>{
     console.log('new user connected');
@@ -16,7 +23,10 @@ io.on('connection', (socket)=>{
     });
     // Test Messages
     socket.on('send-message', (data) => {
-        // console.log(data.text);
+        console.log(data.text);
+        msgArray.push(JSON.stringify(data));
+        msgArray.slice(0, 199);
+        console.log(msgArray);
         io.emit('message-received', data);
     });
 

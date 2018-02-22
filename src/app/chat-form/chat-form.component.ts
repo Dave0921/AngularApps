@@ -1,5 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { WebsocketService } from '../websocket.service';
+import { ChatserviceService } from '../chatservice.service'
+import { Observable } from 'rxjs/Observable'
+import * as Rx from 'rxjs/Rx';
+import { Http, Response } from '@angular/http';
 
 @Component({
   selector: 'app-chat-form',
@@ -11,10 +15,17 @@ export class ChatFormComponent implements OnInit{
   messages: Array<any>;
   AvatarName: 'Placeholder';
   selfAuthor: boolean = false;
+  url = 'http://localhost:4200';
   
-  constructor(private _socketService: WebsocketService){}
+  constructor(
+    private _socketService: WebsocketService,
+    private _chatSerivce: ChatserviceService
+  ){}
 
   ngOnInit(){
+    this._chatSerivce.getChatLogs(this.url + '/api/chat').subscribe((data)=>{
+      console.log(data);
+    });
     this.messages = new Array();
     this._socketService.on('message-received', (msg: any)=>{
       this.messages.push(msg);
