@@ -1,30 +1,30 @@
 <div class="chatcontainer">
   <div class="chatlist container clear-top">
-    <ul class="messages">
-      <li>Example</li>
-    </ul>
+    <div class="row msg-container" *ngFor="let message of messages">
+      <div class="col-md-12 col-xs-12">
+        <div class="chatmsg"
+            [ngClass]="{'chat-msg-sent': selfAuthored, 'chat-msg-received': !selfAuthored}" >
+            <p>{{ message.text }}</p>
+            <div class="chat-author">
+              <strong>{{ message.username }}</strong>&nbsp;
+              <span class="time">{{ message.date | date: 'shortTime' }}</span>
+            </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="chatbox navbar-fixed-bottom">
-    <div class="input-group">
-        <input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here...">
+    <form class="input-group" (ngSubmit)="sendMsg()" >
+        <input id="btn-input" 
+          type="text" 
+          class="form-control input-sm" 
+          placeholder="Type your message here..."
+          name="msgText"
+          [(ngModel)]="msgText">
         <span class="input-group-btn">
             <button class="btn btn-warning btn-sm" id="btn-chat">
                 Send</button>
         </span>
-    </div>
+    </form>
   </div>
 </div>
-  <!-- <div class="btn-group btn-group-toggle float-right">
-      <label class="btn-primary" ngbButtonLabel>
-        <input type="checkbox" ngbButton [(ngModel)]="model.left"> Left (pre-checked)
-      </label>
-      <label class="btn-primary" ngbButtonLabel>
-        <input type="checkbox" ngbButton [(ngModel)]="model.middle"> Middle
-      </label>
-      <label class="btn-primary" ngbButtonLabel>
-        <input type="checkbox" ngbButton [(ngModel)]="model.right"> Right
-      </label>
-    </div>
-</div>
-<hr>
-<pre>{{model | json}}</pre> -->

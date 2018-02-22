@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { WebsocketService } from './websocket.service';
 
+import { WebsocketService } from './websocket.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -8,22 +8,29 @@ import { WebsocketService } from './websocket.service';
 })
 export class AppComponent implements OnInit{
   title = 'Chat App';
+  // msgText: string;
+  // messages: Array<any>;
+  // AvatarName: 'Placeholder';
+  // selfAuthor: boolean = false;
   
   constructor(private _socketService: WebsocketService){}
 
   ngOnInit(){
-    this._socketService.emit('event1',{
-      msg: 'Client to server, can you hear me?'
-    });
-    this._socketService.on('event2',(data:any)=>{
-      console.log(data.msg);
-      this._socketService.emit('event3',{
-        msg: 'Yes, it works for me'
-      });
-    });
-    this._socketService.on('event4',(data:any)=>{
-      console.log(data.msg);
-    });
+    // this.messages = new Array();
+    // this._socketService.on('message-received', (msg: any)=>{
+    //   this.messages.push(msg);
+    //   console.log(msg);
+    //   console.log(this.messages);
+    // });
   }
-
+  // sendMsg(){
+  //   const message = {
+  //     text: this.msgText,
+  //     date: Date.now(),
+  //     nameUrl: this.AvatarName
+  //   };
+  //   this._socketService.emit('send-message', message);
+  //   this.msgText = '';
+  // }
+  
 }

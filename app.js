@@ -15,10 +15,10 @@ io.on('connection', (socket)=>{
         console.log('user disconnected');
     });
     // Test Messages
-    // socket.on('send-message', (data) => {
-    //     console.log(data.text);
-    //     io.emit('message-received', data);
-    // });
+    socket.on('send-message', (data) => {
+        // console.log(data.text);
+        io.emit('message-received', data);
+    });
 
 });
 
