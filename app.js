@@ -24,7 +24,9 @@ io.on('connection', (socket)=>{
     // Server side messages
     socket.on('send-message', (data) => {
         msgArray.push(data);
-        msgArray.slice(0, 199);
+        if (msgArray.length > 200){
+            msgArray.slice(1, 200);
+        }
         console.log(msgArray);
         io.emit('message-received', data);
     });
