@@ -21,7 +21,7 @@ io.on('connection', (socket)=>{
     socket.on('disconnect', () => {
         console.log('user disconnected');
     });
-    // Test Messages
+    // Server side messages
     socket.on('send-message', (data) => {
         msgArray.push(data);
         msgArray.slice(0, 199);

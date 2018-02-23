@@ -32,6 +32,7 @@ export class ChatFormComponent implements OnInit{
       err => {
         console.log('Error Occured');
     });
+    // when socket io has received msg, push msg into msg array
     this._socketService.on('message-received', (msg: any)=>{
       this.messages.push(msg);
       if (this.messages.length > 200){
