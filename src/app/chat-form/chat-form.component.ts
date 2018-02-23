@@ -3,7 +3,7 @@ import { WebsocketService } from '../websocket.service';
 import { ChatserviceService } from '../chatservice.service'
 import { Observable } from 'rxjs/Observable'
 import * as Rx from 'rxjs/Rx';
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-chat-form',
@@ -23,12 +23,21 @@ export class ChatFormComponent implements OnInit{
   ){}
 
   ngOnInit(){
-    this._chatSerivce.getChatLogs(this.url + '/api/chat').subscribe((data)=>{
-      console.log(data);
-    });
     this.messages = new Array();
+    // get chat log
+    this._chatSerivce.getChatLogs(this.url + '/api/chat').subscribe(
+      data => {
+        this.messages = data;
+      },
+      err => {
+        console.log('Error Occured');
+    });
     this._socketService.on('message-received', (msg: any)=>{
       this.messages.push(msg);
+      if (this.messages.length > 200){
+        this.messages.slice(1, 200);
+      }
+      console.log(this.messages);
     });
   }
   sendMsg(){

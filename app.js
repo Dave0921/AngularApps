@@ -23,8 +23,7 @@ io.on('connection', (socket)=>{
     });
     // Test Messages
     socket.on('send-message', (data) => {
-        console.log(data.text);
-        msgArray.push(JSON.stringify(data));
+        msgArray.push(data);
         msgArray.slice(0, 199);
         console.log(msgArray);
         io.emit('message-received', data);
