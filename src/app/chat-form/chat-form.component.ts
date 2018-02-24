@@ -16,7 +16,8 @@ export class ChatFormComponent implements OnInit{
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   msgText: string;
   messages: Array<any>;
-  nickName: string = 'Placeholder';
+  users: Array<any>;
+  nickName: string = 'Placeholder Name';
   selfAuthor: boolean = false;
   joined: boolean = false;
   chaturl = 'http://localhost:4200';
@@ -61,13 +62,16 @@ export class ChatFormComponent implements OnInit{
     });
   }
   ngAfterViewInit() {
+    // watches changes in list of messages; when list of messages changes, scroll to the last message
     this.childmessages.changes.subscribe(this.scrollToBottom);
   }
+  // scroll to the bottom
   scrollToBottom = () => {
     try {
       this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
     } catch (err) {}
   }
+  // send message
   sendMsg(){
     const message = {
       text: this.msgText,

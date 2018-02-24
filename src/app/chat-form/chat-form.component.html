@@ -1,14 +1,25 @@
-<div class="chatcontainer">
-  <div class="chatlist container clear-top" #scrollMe [scrollTop]="scrollMe.scrollHeight">
-    <div class="row msg-container" #messages *ngFor="let message of messages">
-      <div class="col-md-12 col-xs-12">
-        <div class="chat-msg"
-            [ngClass]="{'chat-msg-sent': selfAuthored, 'chat-msg-received': !selfAuthored}">
-            <p>{{ message.text }}</p>
-            <div class="chat-author">
-              <strong>{{ message.nickname }} </strong>
-              <span class="time">Sent: {{ message.date | date: 'short' }}</span>
+<div class="chatcontainer container">
+  <div class="container-fluid" >
+    <div class="row">
+      <div class="col-sm-10">
+        <div class="chatlist clear-top" #scrollMe [scrollTop]="scrollMe.scrollHeight">
+            <div class="row msg-container" #messages *ngFor="let message of messages">
+              <div class="col-md-12 col-xs-12">
+                <div class="chat-msg"
+                    [ngClass]="{'chat-msg-sent': selfAuthored, 'chat-msg-received': !selfAuthored}">
+                    <p>{{ message.text }}</p>
+                    <div class="chat-author">
+                      <strong>{{ message.nickname }} </strong>
+                      <span class="time">Sent: {{ message.date | date: 'short' }}</span>
+                    </div>
+                </div>
+              </div>
             </div>
+          </div>
+      </div>
+      <div class="col-sm-2">
+        <div class="userlist clear-top">
+          <p>Insert users here</p>
         </div>
       </div>
     </div>
