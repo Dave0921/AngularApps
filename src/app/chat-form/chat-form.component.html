@@ -2,7 +2,7 @@
   <div class="chatlist container clear-top">
     <div class="row msg-container" *ngFor="let message of messages">
       <div class="col-md-12 col-xs-12">
-        <div class="chatmsg"
+        <div class="chat-msg"
             [ngClass]="{'chat-msg-sent': selfAuthored, 'chat-msg-received': !selfAuthored}" >
             <p>{{ message.text }}</p>
             <div class="chat-author">
