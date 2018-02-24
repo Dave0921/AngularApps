@@ -1,5 +1,5 @@
 <div class="chatcontainer">
-  <div class="chatlist container clear-top">
+  <div class="chatlist container clear-top" #scrollMe [scrollTop]="scrollMe.scrollHeight">
     <div class="row msg-container" *ngFor="let message of messages">
       <div class="col-md-12 col-xs-12">
         <div class="chat-msg"
