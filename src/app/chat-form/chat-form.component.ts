@@ -16,10 +16,14 @@ export class ChatFormComponent implements OnInit{
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   msgText: string;
   messages: Array<any>;
-  AvatarName: 'Placeholder';
+  nickName: string = 'Placeholder';
   selfAuthor: boolean = false;
-  url = 'http://localhost:4200';
+  joined: boolean = false;
+  chaturl = 'http://localhost:4200';
+  userurl = 'https://uinames.com/api/?region=United%20states';
+
   disableScrollDown = false;
+
   
   constructor(
     private _socketService: WebsocketService,
@@ -27,22 +31,33 @@ export class ChatFormComponent implements OnInit{
   ){}
 
   ngOnInit(){
+    let user = JSON.parse(localStorage.getItem("user"));
+
     this.messages = new Array();
     // get chat log
-    this._chatSerivce.getChatLogs(this.url + '/api/chat').subscribe(
+    this._chatSerivce.getChatLogs(this.chaturl + '/api/chat').subscribe(
       data => {
         this.messages = data;
       },
       err => {
-        console.log('Error Occured');
+        console.log('Error: could not get chat logs');
     });
+    // get random user name
+    this._chatSerivce.getUserName(this.userurl).subscribe(
+      data => {
+        this.nickName = data.name + ' ' + data.surname;
+      },
+      err => {
+        console.log('Error: could not get username')
+      }
+    );
     // when socket io has received msg, push msg into msg array
     this._socketService.on('message-received', (msg: any)=>{
       this.messages.push(msg);
       if (this.messages.length > 200){
         this.messages.shift();
       };
-      console.log(this.messages);
+      // console.log(this.messages);
     });
   }
   ngAfterViewInit() {
@@ -57,7 +72,7 @@ export class ChatFormComponent implements OnInit{
     const message = {
       text: this.msgText,
       date: Date.now(),
-      username: this.AvatarName
+      nickname: this.nickName
     };
     this._socketService.emit('send-message', message);
     this.msgText = '';

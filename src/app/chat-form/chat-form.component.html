@@ -6,7 +6,7 @@
             [ngClass]="{'chat-msg-sent': selfAuthored, 'chat-msg-received': !selfAuthored}">
             <p>{{ message.text }}</p>
             <div class="chat-author">
-              <strong>{{ message.username }} </strong>
+              <strong>{{ message.nickname }} </strong>
               <span class="time">Sent: {{ message.date | date: 'short' }}</span>
             </div>
         </div>

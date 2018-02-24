@@ -11,5 +11,9 @@ export class ChatserviceService {
   getChatLogs(url:string): Observable<any> {
     return this.http.get(url);
   };
+  
+  getUserName(url:string): Observable<any> {
+    return this.http.get(url);
+  };
 }
 
