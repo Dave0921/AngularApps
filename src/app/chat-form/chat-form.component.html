@@ -1,13 +1,13 @@
 <div class="chatcontainer">
   <div class="chatlist container clear-top" #scrollMe [scrollTop]="scrollMe.scrollHeight">
-    <div class="row msg-container" *ngFor="let message of messages">
+    <div class="row msg-container" #messages *ngFor="let message of messages">
       <div class="col-md-12 col-xs-12">
         <div class="chat-msg"
-            [ngClass]="{'chat-msg-sent': selfAuthored, 'chat-msg-received': !selfAuthored}" >
+            [ngClass]="{'chat-msg-sent': selfAuthored, 'chat-msg-received': !selfAuthored}">
             <p>{{ message.text }}</p>
             <div class="chat-author">
-              <strong>{{ message.username }}</strong>&nbsp;
-              <span class="time">{{ message.date | date: 'shortTime' }}</span>
+              <strong>{{ message.username }} </strong>
+              <span class="time">Sent: {{ message.date | date: 'short' }}</span>
             </div>
         </div>
       </div>
