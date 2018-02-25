@@ -21,7 +21,7 @@ export class ChatFormComponent implements OnInit{
   selfAuthor: boolean = false;
   joined: boolean = false;
   chaturl = 'http://localhost:4200';
-  userurl = 'https://uinames.com/api/?region=United%20states';
+  usernameapiurl = 'https://uinames.com/api/?region=United%20states';
 
   disableScrollDown = false;
 
@@ -32,9 +32,19 @@ export class ChatFormComponent implements OnInit{
   ){}
 
   ngOnInit(){
-    let user = JSON.parse(localStorage.getItem("user"));
+    // let user = JSON.parse(localStorage.getItem("user"));
 
     this.messages = new Array();
+    this.users = new Array();
+    // get all users in chat room
+    this._chatSerivce.getUsers(this.chaturl + '/api/users').subscribe(
+      data => {
+        this.users = data;
+      },
+      err => {
+        console.log('Error: could not get users')
+      }
+    )
     // get chat log
     this._chatSerivce.getChatLogs(this.chaturl + '/api/chat').subscribe(
       data => {
@@ -44,16 +54,20 @@ export class ChatFormComponent implements OnInit{
         console.log('Error: could not get chat logs');
     });
     // get random user name
-    this._chatSerivce.getUserName(this.userurl).subscribe(
+    this._chatSerivce.getUserName(this.usernameapiurl).subscribe(
       data => {
         this.nickName = data.name + ' ' + data.surname;
+        this._socketService.emit('user-connected', this.nickName);
       },
       err => {
         console.log('Error: could not get username')
       }
     );
+    this._socketService.on('user-connected-received', (user: any) => {
+      this.users.push(user);
+    });
     // when socket io has received msg, push msg into msg array
-    this._socketService.on('message-received', (msg: any)=>{
+    this._socketService.on('message-received', (msg: any) => {
       this.messages.push(msg);
       if (this.messages.length > 200){
         this.messages.shift();
@@ -64,6 +78,9 @@ export class ChatFormComponent implements OnInit{
   ngAfterViewInit() {
     // watches changes in list of messages; when list of messages changes, scroll to the last message
     this.childmessages.changes.subscribe(this.scrollToBottom);
+    this._socketService.on('user-disconnect', (userArray: any) => {
+      this.users = userArray;
+    });
   }
   // scroll to the bottom
   scrollToBottom = () => {

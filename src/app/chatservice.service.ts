@@ -15,5 +15,9 @@ export class ChatserviceService {
   getUserName(url:string): Observable<any> {
     return this.http.get(url);
   };
+
+  getUsers(url:string): Observable<any> {
+    return this.http.get(url);
+  }
 }
 
