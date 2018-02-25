@@ -2,6 +2,7 @@
   <div class="container-fluid" >
     <div class="row">
       <div class="col-sm-10">
+        <h4>You are: {{ nickName }}</h4>
         <div class="chatlist clear-top" #scrollMe [scrollTop]="scrollMe.scrollHeight">
             <div class="row msg-container" #messages *ngFor="let message of messages">
               <div class="col-md-12 col-xs-12">
@@ -18,6 +19,7 @@
           </div>
       </div>
       <div class="col-sm-2">
+        <h4>Users Online:</h4>
         <div class="userlist clear-top">
           <div *ngFor="let user of users" >
               <p>{{ user }}</p>
@@ -28,16 +30,16 @@
   </div>
   <div class="chatbox navbar-fixed-bottom">
     <form class="input-group" (ngSubmit)="sendMsg()" >
-        <input id="btn-input" 
-          type="text" 
-          class="form-control input-sm" 
-          placeholder="Type your message here..."
-          name="msgText"
-          [(ngModel)]="msgText">
-        <span class="input-group-btn">
-            <button class="btn btn-warning btn-sm" id="btn-chat">
-                Send</button>
-        </span>
+      <input id="btn-input" 
+        type="text" 
+        class="form-control input-sm" 
+        placeholder="Type your message here..."
+        name="msgText"
+        [(ngModel)]="msgText">
+      <span class="input-group-btn">
+        <button class="btn btn-warning btn-sm" id="btn-chat">
+          Send</button>
+      </span>
     </form>
   </div>
 </div>
