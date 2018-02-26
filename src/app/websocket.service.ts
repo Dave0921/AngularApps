@@ -10,12 +10,12 @@ export class WebsocketService {
   socket:SocketIOClient.Socket;
 
   constructor() { 
-    this.socket = io.connect();
+    this.socket = io.connect({transports: ['websocket']});
   }
 
   on(eventName:any, callback:any){
     if(this.socket){
-      this.socket.on(eventName, function(data: any){
+      this.socket.on(eventName, function(data:any){
         callback(data);
       });
     }

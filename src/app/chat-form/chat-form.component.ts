@@ -12,17 +12,16 @@ import 'rxjs/add/operator/catch';
   styleUrls: ['./chat-form.component.css']
 })
 export class ChatFormComponent implements OnInit{
-  @ViewChildren('messages') childmessages: QueryList<any>;
+  @ViewChildren('messages') childMessages: QueryList<any>;
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   msgText: string;
   messages: Array<any>;
   users: Array<any>;
-  nickName: string = 'Placeholder Name';
+  nickName: string;
   selfAuthor: boolean = false;
   joined: boolean = false;
   chaturl = 'http://localhost:4200';
   usernameapiurl = 'https://uinames.com/api/?region=United%20states';
-
   disableScrollDown = false;
 
   
@@ -77,7 +76,7 @@ export class ChatFormComponent implements OnInit{
   }
   ngAfterViewInit() {
     // when list of messages changes, scroll to the last message
-    this.childmessages.changes.subscribe(this.scrollToBottom);
+    this.childMessages.changes.subscribe(this.scrollToBottom);
     // when client has received user disconnected confirmation, remove disconnected user
     this._socketService.on('user-disconnect', (userArray: any) => {
       this.users = userArray;
