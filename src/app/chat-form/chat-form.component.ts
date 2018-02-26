@@ -18,7 +18,7 @@ export class ChatFormComponent implements OnInit{
   messages: Array<any>;
   users: Array<any>;
   nickName: string;
-  selfAuthor: boolean = false;
+  selfAuthor: boolean = true;
   joined: boolean = false;
   chaturl = 'http://localhost:4200';
   usernameapiurl = 'https://uinames.com/api/?region=United%20states';
@@ -34,6 +34,7 @@ export class ChatFormComponent implements OnInit{
     // let user = JSON.parse(localStorage.getItem("user"));
     this.messages = new Array();
     this.users = new Array();
+    // this.selfAuthor = true;    
     // get all users in chat room
     this._chatSerivce.getUsers(this.chaturl + '/api/users').subscribe(
       data => {
@@ -93,7 +94,7 @@ export class ChatFormComponent implements OnInit{
     const message = {
       text: this.msgText,
       date: Date.now(),
-      nickname: this.nickName
+      nickname: this.nickName,
     };
     this._socketService.emit('send-message', message);
     this.msgText = '';

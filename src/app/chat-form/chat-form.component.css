@@ -76,14 +76,10 @@ html, body {
     padding-bottom: 10px;
 }
 .chat-msg.chat-msg-sent {
+    text-align: right;
     margin-right: 0;
     padding-bottom: 10px;
-}
-.chat-msg.chat-msg-sent .chat-author {
-    text-align: right;
-}
-.chat-msg.chat-msg-sent .time {
-    float: right;
+    font-style: italic;
 }
 .chatbox {
     position: fixed;
