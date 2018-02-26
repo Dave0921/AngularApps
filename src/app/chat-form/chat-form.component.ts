@@ -33,8 +33,7 @@ export class ChatFormComponent implements OnInit{
   ngOnInit(){
     // let user = JSON.parse(localStorage.getItem("user"));
     this.messages = new Array();
-    this.users = new Array();
-    // this.selfAuthor = true;    
+    this.users = new Array();   
     // get all users in chat room
     this._chatSerivce.getUsers(this.chaturl + '/api/users').subscribe(
       data => {
