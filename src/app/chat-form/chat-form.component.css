@@ -1,30 +1,32 @@
 html, body {
     height: 100%;
 }
+h5 {
+    height: 8vh;
+}
 .container-fluid {
     position: relative;
+    height: 100%;
 }
 .chatcontainer {
-    height: 100%;
+    height: 55vh;
 }
 .chatlist {
     background: #e5e5e5;
     position: relative;
     margin: 10px 0 0 0;
-    height: 60vh;
+    height: 55vh;
     overflow-x: hidden;
     padding: 0 10px 10px;
-    margin-bottom: 100px;
     overflow-y: scroll;
 }
 .userlist {
     background: #e5e5e5;
     position: relative;
     margin: 10px 0 0 0;
-    height: 60vh;
+    height: 55vh;
     overflow-x: hidden;
     padding: 0 10px 10px;
-    margin-bottom: 100px;
 }
 
 .chatlist::-webkit-scrollbar-track {
@@ -56,7 +58,7 @@ html, body {
     padding: 6px;
 }
 .chat-msg p {
-    font-size: 12px;
+    font-size: 14px;
     margin: 0 0 .2rem 10px;
 }
 .chat-msg .time {
@@ -64,6 +66,7 @@ html, body {
 }
 .chat-msg .chat-author {
     display: block;
+    font-size: 14px;
 }
 .messages {
     height: 100%;
@@ -73,12 +76,10 @@ html, body {
 }
 .chat-msg .chat-msg-received {
     margin-right: 0;
-    padding-bottom: 10px;
 }
 .chat-msg.chat-msg-sent {
     float: right;
     margin-right: 0;
-    padding-bottom: 10px;
     font-style: italic;
 }
 .chat-msg.chat-msg-sent .chat-author {

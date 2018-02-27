@@ -7,7 +7,7 @@ const io = require('socket.io', { rememberTransport: false, transports: ['WebSoc
 let msgArray = [];
 let userArray = [];
 
-const port = 4200;
+const port = process.env.PORT || 4200;
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
@@ -37,12 +37,49 @@ io.on('connection', (socket) => {
     });
     // Server receiving messages
     socket.on('send-message', (data) => {
-        msgArray.push(data);
-        if (msgArray.length > 200){
-            msgArray.shift();
+        // check if user wants to change nickname color
+        if (data.text.startsWith('/nickcolor')) {
+            let nickNameColor = '#' + data.text.split(' ')[1];
+            msgArray.forEach((msg) => {
+                if (msg.nickname === data.nickname) {
+                    msg.nicknamecolor = nickNameColor;
+                    // console.log(msg.nickname);
+                }
+            });
+            // console.log(nickNameColor);
+            data.nicknamecolor = nickNameColor;
+            io.emit('change-nick-color', data);
         }
-        // console.log(msgArray);
-        io.emit('message-received', data);
+        // check if user wants to change nickname
+        else if (data.text.startsWith('/nick')) {
+            let newNickName = data.text.substring((data.text.indexOf('<') + 1), data.text.indexOf('>'));
+            if (userArray.includes(newNickName)) {
+                return console.log('Error: nickname already exists');
+            }
+            // console.log(newNickName);
+            msgArray.forEach((msg) => {
+                if (msg.nickname === data.nickname) {
+                    msg.nickname = newNickName;
+                    // console.log(msg.nickname);
+                }
+            });
+            let index = userArray.indexOf(data.nickname);
+            if (index !== -1) {
+                userArray[index] = newNickName;
+                // console.log(userArray);
+            }
+            user = newNickName;
+            io.emit('change-nick', newNickName);
+        }
+        // else store message in array of messages
+        else {
+            msgArray.push(data);
+            if (msgArray.length > 200){
+                msgArray.shift();
+            }
+            // console.log(msgArray);
+            io.emit('message-received', data);
+        }
     });
 
 });

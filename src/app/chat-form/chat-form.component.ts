@@ -23,7 +23,7 @@ export class ChatFormComponent implements OnInit{
   chaturl = 'http://localhost:4200';
   usernameapiurl = 'https://uinames.com/api/?region=United%20states';
   disableScrollDown = false;
-
+  nickNameColor: string = '#000000';
   
   constructor(
     private _socketService: WebsocketService,
@@ -81,6 +81,43 @@ export class ChatFormComponent implements OnInit{
     this._socketService.on('user-disconnect', (userArray: any) => {
       this.users = userArray;
     });
+    // change nickName color
+    this._socketService.on('change-nick-color', (msg: any) => {
+      // get chat log
+      this._chatSerivce.getChatLogs(this.chaturl + '/api/chat').subscribe(
+        data => {
+          this.messages = data;
+          if (msg.nickname === this.nickName) {
+            this.nickNameColor = msg.nicknamecolor;
+          }
+        },
+        err => {
+          console.log('Error: could not get chat logs');
+      });
+    });
+    // change nickName
+    this._socketService.on('change-nick', (nick: any) => {
+      this._chatSerivce.getUsers(this.chaturl + '/api/users').subscribe(
+        data => {
+          this.users = data;
+          let index = this.users.indexOf(this.nickName);
+          if (index === -1) {
+            this.nickName = nick;
+          }
+        },
+        err => {
+          console.log('Error: could not get users')
+        }
+      )
+      // get chat log
+      this._chatSerivce.getChatLogs(this.chaturl + '/api/chat').subscribe(
+        data => {
+          this.messages = data;
+        },
+        err => {
+          console.log('Error: could not get chat logs');
+      });
+    });
   }
   // scroll to the bottom
   scrollToBottom = () => {
@@ -94,9 +131,12 @@ export class ChatFormComponent implements OnInit{
       text: this.msgText,
       date: Date.now(),
       nickname: this.nickName,
+      nicknamecolor: this.nickNameColor
     };
     this._socketService.emit('send-message', message);
     this.msgText = '';
   }
-  
+  setNickColor(){
+    return this.nickNameColor;
+  }
 }
