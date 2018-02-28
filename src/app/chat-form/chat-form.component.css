@@ -97,10 +97,11 @@ h5 {
 }
 .chatboxcontainer {
     position: fixed;
-    margin-top: 20vmin;
     bottom: 0;
     width: 75vw;
     height: 60px;
+    left: 50%;
+    transform: translateX()-50%;
 }
 .chatbox {
     overflow: hidden;
