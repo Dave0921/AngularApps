@@ -32,8 +32,7 @@ io.on('connection', (socket) => {
         user = data;
         console.log(data + ' has connected');
         userArray.push(data);
-        io.emit('user-connected-received', data);
-        // console.log(userArray);
+        io.emit('user-connected-received', {messagearray: msgArray, userarray: userArray});
     });
     // Server receiving messages
     socket.on('send-message', (data) => {
