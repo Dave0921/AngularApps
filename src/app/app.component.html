@@ -4,11 +4,22 @@
   </h1>
 </div>
 <div class="container-fluid">
-  <ngb-tabset>
+  <ngb-tabset [destroyOnHide]="false">
     <ngb-tab title="Chat">
       <ng-template ngbTabContent>
         <!-- Chat Box -->
         <app-chat-form></app-chat-form>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Info">
+      <ng-template ngbTabContent>
+        <h3>Useful Commands</h3><br>
+        <h5>Change nickname:</h5><br>
+        <p>You can change your nickname by typing the following command into the textbox:</p><br>
+        <samp>/nick &lt;new nickname&gt;</samp><br><br>
+        <h5>Change nickname color:</h5><br>
+        <p>You can change the color of your nickname by typing the following command into the textbox:</p>
+        <samp>/nickcolor RRGGBB</samp>
       </ng-template>
     </ngb-tab>
   </ngb-tabset>
