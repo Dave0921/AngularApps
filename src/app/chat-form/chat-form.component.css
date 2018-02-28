@@ -101,7 +101,7 @@ h5 {
     width: 75vw;
     height: 60px;
     left: 50%;
-    transform: translateX()-50%;
+    transform: translateX(-50%);
 }
 .chatbox {
     overflow: hidden;
