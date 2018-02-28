@@ -42,12 +42,10 @@ io.on('connection', (socket) => {
             msgArray.forEach((msg) => {
                 if (msg.nickname === data.nickname) {
                     msg.nicknamecolor = nickNameColor;
-                    // console.log(msg.nickname);
                 }
             });
-            // console.log(nickNameColor);
             data.nicknamecolor = nickNameColor;
-            io.emit('change-nick-color', data);
+            io.emit('change-nick-color', {msg: data, messagearray: msgArray});
         }
         // check if user wants to change nickname
         else if (data.text.startsWith('/nick')) {
@@ -55,20 +53,17 @@ io.on('connection', (socket) => {
             if (userArray.includes(newNickName)) {
                 return console.log('Error: nickname already exists');
             }
-            // console.log(newNickName);
             msgArray.forEach((msg) => {
                 if (msg.nickname === data.nickname) {
                     msg.nickname = newNickName;
-                    // console.log(msg.nickname);
                 }
             });
             let index = userArray.indexOf(data.nickname);
             if (index !== -1) {
                 userArray[index] = newNickName;
-                // console.log(userArray);
             }
             user = newNickName;
-            io.emit('change-nick', newNickName);
+            io.emit('change-nick', {nick: newNickName, messagearray: msgArray, userarray: userArray});
         }
         // else store message in array of messages
         else {
@@ -76,7 +71,6 @@ io.on('connection', (socket) => {
             if (msgArray.length > 200){
                 msgArray.shift();
             }
-            // console.log(msgArray);
             io.emit('message-received', data);
         }
     });
