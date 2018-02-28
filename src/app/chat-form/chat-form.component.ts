@@ -35,22 +35,22 @@ export class ChatFormComponent implements OnInit{
     this.messages = new Array();
     this.users = new Array();   
     // get all users in chat room
-    this._chatSerivce.getUsers(this.chaturl + '/api/users').subscribe(
-      data => {
-        this.users = data;
-      },
-      err => {
-        console.log('Error: could not get users')
-      }
-    )
+    // this._chatSerivce.getUsers(this.chaturl + '/api/users').subscribe(
+    //   data => {
+    //     this.users = data;
+    //   },
+    //   err => {
+    //     console.log('Error: could not get users')
+    //   }
+    // )
     // get chat log
-    this._chatSerivce.getChatLogs(this.chaturl + '/api/chat').subscribe(
-      data => {
-        this.messages = data;
-      },
-      err => {
-        console.log('Error: could not get chat logs');
-    });
+    // this._chatSerivce.getChatLogs(this.chaturl + '/api/chat').subscribe(
+    //   data => {
+    //     this.messages = data;
+    //   },
+    //   err => {
+    //     console.log('Error: could not get chat logs');
+    // });
     // get random user nickname
     this._chatSerivce.getUserName(this.usernameapiurl).subscribe(
       data => {
@@ -61,9 +61,10 @@ export class ChatFormComponent implements OnInit{
         console.log('Error: could not get username')
       }
     );
-    // when client has received user connected confirmation, push user nickname into user array
-    this._socketService.on('user-connected-received', (user: any) => {
-      this.users.push(user);
+    // when client has received user connected confirmation, get array of messages and users from server
+    this._socketService.on('user-connected-received', (data: any) => {
+      this.messages = data.messagearray;
+      this.users = data.userarray;
     });
     // when client has received message received confirmation, push msg into msg array
     this._socketService.on('message-received', (msg: any) => {
