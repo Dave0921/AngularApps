@@ -18,9 +18,6 @@ export class ChatFormComponent implements OnInit{
   messages: Array<any>;
   users: Array<any>;
   nickName: string;
-  selfAuthor: boolean = true;
-  joined: boolean = false;
-  chaturl = 'http://localhost:4200';
   usernameapiurl = 'https://uinames.com/api/?region=United%20states';
   disableScrollDown = false;
   nickNameColor: string = '#000000';
@@ -34,23 +31,6 @@ export class ChatFormComponent implements OnInit{
     // let user = JSON.parse(localStorage.getItem("user"));
     this.messages = new Array();
     this.users = new Array();   
-    // get all users in chat room
-    // this._chatSerivce.getUsers(this.chaturl + '/api/users').subscribe(
-    //   data => {
-    //     this.users = data;
-    //   },
-    //   err => {
-    //     console.log('Error: could not get users')
-    //   }
-    // )
-    // get chat log
-    // this._chatSerivce.getChatLogs(this.chaturl + '/api/chat').subscribe(
-    //   data => {
-    //     this.messages = data;
-    //   },
-    //   err => {
-    //     console.log('Error: could not get chat logs');
-    // });
     // get random user nickname
     this._chatSerivce.getUserName(this.usernameapiurl).subscribe(
       data => {
@@ -83,41 +63,24 @@ export class ChatFormComponent implements OnInit{
       this.users = userArray;
     });
     // change nickName color
-    this._socketService.on('change-nick-color', (msg: any) => {
+    this._socketService.on('change-nick-color', (data: any) => {
       // get chat log
-      this._chatSerivce.getChatLogs(this.chaturl + '/api/chat').subscribe(
-        data => {
-          this.messages = data;
-          if (msg.nickname === this.nickName) {
-            this.nickNameColor = msg.nicknamecolor;
-          }
-        },
-        err => {
-          console.log('Error: could not get chat logs');
-      });
+      this.messages = data.messagearray;
+      // change nickName color if current client's nickname === nickname sent by server
+      if (data.msg.nickname === this.nickName) {
+        this.nickNameColor = data.msg.nicknamecolor;
+      }
     });
     // change nickName
-    this._socketService.on('change-nick', (nick: any) => {
-      this._chatSerivce.getUsers(this.chaturl + '/api/users').subscribe(
-        data => {
-          this.users = data;
-          let index = this.users.indexOf(this.nickName);
-          if (index === -1) {
-            this.nickName = nick;
-          }
-        },
-        err => {
-          console.log('Error: could not get users')
-        }
-      )
+    this._socketService.on('change-nick', (data: any) => {
+      // get users
+      this.users = data.userarray;
+      let index = this.users.indexOf(this.nickName);
+      if (index === -1) {
+        this.nickName = data.nick;
+      }
       // get chat log
-      this._chatSerivce.getChatLogs(this.chaturl + '/api/chat').subscribe(
-        data => {
-          this.messages = data;
-        },
-        err => {
-          console.log('Error: could not get chat logs');
-      });
+      this.messages = data.messagearray;
     });
   }
   // scroll to the bottom
@@ -136,8 +99,5 @@ export class ChatFormComponent implements OnInit{
     };
     this._socketService.emit('send-message', message);
     this.msgText = '';
-  }
-  setNickColor(){
-    return this.nickNameColor;
   }
 }
