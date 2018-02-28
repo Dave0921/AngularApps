@@ -30,18 +30,20 @@
       </div>
     </div>
   </div>
-  <div class="chatbox navbar-fixed-bottom">
-    <form class="input-group" (ngSubmit)="sendMsg()" >
-      <input id="btn-input" 
-        type="text" 
-        class="form-control input-sm" 
-        placeholder="Type your message here..."
-        name="msgText"
-        [(ngModel)]="msgText">
-      <span class="input-group-btn">
-        <button class="btn btn-warning btn-sm" id="btn-chat">
-          Send</button>
-      </span>
-    </form>
+  <div class="chatboxcontainer">
+    <div class="chatbox navbar-fixed-bottom">
+      <form class="input-group" (ngSubmit)="sendMsg()" >
+        <input id="btn-input" 
+          type="text" 
+          class="form-control input-sm" 
+          placeholder="Type your message here..."
+          name="msgText"
+          [(ngModel)]="msgText">
+        <span class="input-group-btn">
+          <button class="btn btn-warning btn-sm" id="btn-chat">
+            Send</button>
+        </span>
+      </form>
+    </div>
   </div>
 </div>

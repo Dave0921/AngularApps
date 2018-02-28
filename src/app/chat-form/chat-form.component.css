@@ -9,7 +9,8 @@ h5 {
     height: 100%;
 }
 .chatcontainer {
-    height: 55vh;
+    display: flex;
+    flex-direction: column;
 }
 .chatlistcontainer {
     height: 55vh;
@@ -94,14 +95,21 @@ h5 {
 .chat-msg.chat-msg-sent .time {
     text-align: right;
 }
-.chatbox {
+.chatboxcontainer {
     position: fixed;
-    overflow: hidden;
-    width: 85%;
+    margin-top: 20vmin;
     bottom: 0;
-    /* Set the fixed height of the footer here */
+    width: 75vw;
+    height: 60px;
+}
+.chatbox {
+    overflow: hidden;
+    margin: auto;
     height: 60px;
 }
 .chatbox input {
     height: calc(70px - 30px);
   }
+.btn-sm{
+    height: calc(70px - 30px);
+}
