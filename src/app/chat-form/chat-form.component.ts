@@ -12,7 +12,7 @@ import 'rxjs/add/operator/catch';
   styleUrls: ['./chat-form.component.css']
 })
 export class ChatFormComponent implements OnInit{
-  @ViewChildren('messages') childMessages: QueryList<any>;
+  @ViewChildren('messages') private childMessages: QueryList<any>;
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   msgText: string;
   messages: Array<any>;

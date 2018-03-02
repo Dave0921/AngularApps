@@ -49,7 +49,7 @@ io.on('connection', (socket) => {
         }
         // check if user wants to change nickname
         else if (data.text.startsWith('/nick')) {
-            let newNickName = data.text.substring((data.text.indexOf('<') + 1), data.text.indexOf('>'));
+            let newNickName = data.text.substring((data.text.indexOf(' ') + 1));
             if (userArray.includes(newNickName)) {
                 return console.log('Error: nickname already exists');
             }
