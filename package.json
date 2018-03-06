@@ -15,7 +15,6 @@
   "private": true,
   "dependencies": {
     "@angular/animations": "^5.2.0",
-    "@angular/cli": "1.6.8",
     "@angular/common": "^5.2.0",
     "@angular/compiler": "^5.2.0",
     "@angular/compiler-cli": "^5.2.0",
@@ -28,7 +27,7 @@
     "@ng-bootstrap/ng-bootstrap": "^1.0.0",
     "@types/socket.io-client": "^1.4.32",
     "body-parser": "^1.18.2",
-    "bootstrap": "^4.0.0-beta.2",
+    "bootstrap": "^4.0.0",
     "core-js": "^2.4.1",
     "express": "^4.16.2",
     "ngx-cookie-service": "^1.0.10",
@@ -39,7 +38,7 @@
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
-    "@angular/cli": "1.6.8",
+    "@angular/cli": "^1.7.2",
     "@angular/compiler-cli": "^5.2.0",
     "@angular/language-service": "^5.2.0",
     "@types/jasmine": "~2.8.3",
