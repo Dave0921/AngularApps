@@ -9,6 +9,7 @@ import { WebsocketService } from './websocket.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ChatFormComponent } from './chat-form/chat-form.component';
 import { ChatserviceService } from './chatservice.service'
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { ChatserviceService } from './chatservice.service'
   ],
   providers: [
     WebsocketService,
-    ChatserviceService
+    ChatserviceService,
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable'
 import * as Rx from 'rxjs/Rx';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/catch';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-chat-form',
@@ -21,26 +22,40 @@ export class ChatFormComponent implements OnInit{
   usernameapiurl = 'https://uinames.com/api/?region=United%20states';
   disableScrollDown = false;
   nickNameColor: string = '#000000';
+  cookieValueNick: string = 'UNKNOWN';
+  cookieValueNickColor: string = 'UNKNOWN';
   
   constructor(
     private _socketService: WebsocketService,
-    private _chatSerivce: ChatserviceService
+    private _chatSerivce: ChatserviceService,
+    private _cookieService: CookieService
   ){}
 
   ngOnInit(){
-    // let user = JSON.parse(localStorage.getItem("user"));
+    this.cookieValueNick = this._cookieService.get('Nickname');
+    this.cookieValueNickColor = this._cookieService.get('Nicknamecolor');
     this.messages = new Array();
     this.users = new Array();   
-    // get random user nickname
-    this._chatSerivce.getUserName(this.usernameapiurl).subscribe(
-      data => {
-        this.nickName = data.name + ' ' + data.surname;
-        this._socketService.emit('user-connected', this.nickName);
-      },
-      err => {
-        console.log('Error: could not get username')
-      }
-    );
+    
+    if(this.cookieValueNick) {
+      this.nickName = this.cookieValueNick;
+      this.nickNameColor = this.cookieValueNickColor;
+      this._socketService.emit('user-connected', this.nickName);
+    }
+    else {
+      // get random user nickname
+      this._chatSerivce.getUserName(this.usernameapiurl).subscribe(
+        data => {
+          this.nickName = data.name + ' ' + data.surname;
+          this._cookieService.set('Nickname', this.nickName );
+          this._cookieService.set('Nicknamecolor', this.nickNameColor)
+          this._socketService.emit('user-connected', this.nickName);
+        },
+        err => {
+          console.log('Error: could not get username');
+        }
+      );
+    }
     // when client has received user connected confirmation, get array of messages and users from server
     this._socketService.on('user-connected-received', (data: any) => {
       this.messages = data.messagearray;
@@ -69,6 +84,7 @@ export class ChatFormComponent implements OnInit{
       // change nickName color if current client's nickname === nickname sent by server
       if (data.msg.nickname === this.nickName) {
         this.nickNameColor = data.msg.nicknamecolor;
+        this._cookieService.set('Nicknamecolor', this.nickNameColor);
       }
     });
     // change nickName
@@ -78,6 +94,7 @@ export class ChatFormComponent implements OnInit{
       let index = this.users.indexOf(this.nickName);
       if (index === -1) {
         this.nickName = data.nick;
+        this._cookieService.set( 'Nickname', this.nickName );
       }
       // get chat log
       this.messages = data.messagearray;
