@@ -12,14 +12,6 @@ const port = process.env.PORT || 4200;
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// get chat logs
-app.get('/api/chat',(req, res) => {
-    res.json(msgArray);
-});
-app.get('/api/users',(req, res) => {
-    res.json(userArray);
-})
-
 io.on('connection', (socket) => {
     let user;
     socket.on('disconnect', () => {
@@ -27,7 +19,6 @@ io.on('connection', (socket) => {
         let index = userArray.indexOf(user);
         if(index !== -1) userArray.splice(index, 1);
         io.emit('user-disconnect', userArray);
-        // console.log(userArray);
     });
     socket.on('user-connected', (data) => {
         user = data;

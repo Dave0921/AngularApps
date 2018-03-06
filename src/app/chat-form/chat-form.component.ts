@@ -52,7 +52,11 @@ export class ChatFormComponent implements OnInit{
           this._socketService.emit('user-connected', this.nickName);
         },
         err => {
-          console.log('Error: could not get username');
+          console.log('Error: could not get nickname');
+          this.nickName = 'Guest' + Math.floor(Math.random() * 101);
+          this._cookieService.set('Nickname', this.nickName );
+          this._cookieService.set('Nicknamecolor', this.nickNameColor)
+          this._socketService.emit('user-connected', this.nickName);
         }
       );
     }
@@ -67,7 +71,6 @@ export class ChatFormComponent implements OnInit{
       if (this.messages.length > 200){
         this.messages.shift();
       };
-      // console.log(this.messages);
     });
   }
   ngAfterViewInit() {

@@ -4,6 +4,10 @@ html, body {
 h5 {
     height: 8vh;
 }
+.container {
+    padding-left: 0;
+    padding-right: 0;
+}
 .container-fluid {
     position: relative;
     height: 100%;
@@ -96,9 +100,10 @@ h5 {
     text-align: right;
 }
 .chatboxcontainer {
-    position: fixed;
-    bottom: 0;
+    position: relative;
+    /* bottom: 0; */
     width: 75vw;
+    margin-top: 35px;
     height: 60px;
     left: 50%;
     transform: translateX(-50%);
