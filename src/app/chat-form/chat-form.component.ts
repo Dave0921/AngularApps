@@ -53,7 +53,7 @@ export class ChatFormComponent implements OnInit{
         },
         err => {
           console.log('Error: could not get nickname');
-          this.nickName = 'Guest' + Math.floor(Math.random() * 101);
+          this.nickName = 'Guest' + Math.floor(Math.random() * 10001);
           this._cookieService.set('Nickname', this.nickName );
           this._cookieService.set('Nicknamecolor', this.nickNameColor)
           this._socketService.emit('user-connected', this.nickName);

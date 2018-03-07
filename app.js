@@ -34,6 +34,7 @@ io.on('connection', (socket) => {
         // check if user wants to change nickname color
         if (data.text.startsWith('/nickcolor')) {
             let result = data.text.split(' ')[1];
+            if (result === undefined || result === '' || result === null) return console.log('Error: color cannot be blank');
             if (result.match(/[0-9A-Fa-f]/g) === null || ((result.length !== 6 && result.length !== 3) || result.match(/[0-9A-Fa-f]/g).length < result.length)) {
                 return console.log('Error: Entered text must be a valid HEX color');
             } 
@@ -49,8 +50,10 @@ io.on('connection', (socket) => {
         // check if user wants to change nickname
         else if (data.text.startsWith('/nick')) {
             let newNickName = data.text.substring((data.text.indexOf(' ') + 1)).trim();
+            console.log(newNickName);
             let newNickNameLower = newNickName.toLowerCase();
             let newNickNameUpper = newNickName.toUpperCase();
+            if (newNickName === '' || newNickName === null || newNickName === undefined) return console.log('Error: nickname cannot be blank');
             for (let i =0; i<newNickName.length; i++) {
                 if (newNickNameLower[i] === newNickNameUpper[i] && isNaN(newNickNameLower[i]) === true) {
                     return console.log('Error: nickname cannot contain special characters');
