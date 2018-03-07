@@ -18,7 +18,10 @@ io.on('connection', (socket) => {
         console.log(user + ' has disconnected');
         let index = userArray.indexOf(user);
         if(index !== -1) userArray.splice(index, 1);
-        io.emit('user-disconnect', userArray);
+        noDupUserArray = userArray.filter((item, index, inputArray) => {
+            return inputArray.indexOf(item) === index;
+        });
+        io.emit('user-disconnect', noDupUserArray);
     });
     socket.on('user-connected', (data) => {
         user = data;
