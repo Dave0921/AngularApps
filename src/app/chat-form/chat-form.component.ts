@@ -24,6 +24,7 @@ export class ChatFormComponent implements OnInit{
   nickNameColor: string = '#000000';
   cookieValueNick: string = 'UNKNOWN';
   cookieValueNickColor: string = 'UNKNOWN';
+  nickNameChange = false;
   
   constructor(
     private _socketService: WebsocketService,
@@ -98,6 +99,10 @@ export class ChatFormComponent implements OnInit{
       if (index === -1) {
         this.nickName = data.nick;
         this._cookieService.set( 'Nickname', this.nickName );
+        this.nickNameChange = true;
+        setTimeout( () => {   
+          this.nickNameChange = false;
+        }, 4000);
       }
       // get chat log
       this.messages = data.messagearray;

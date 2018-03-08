@@ -53,7 +53,6 @@ io.on('connection', (socket) => {
         // check if user wants to change nickname
         else if (data.text.startsWith('/nick')) {
             let newNickName = data.text.substring((data.text.indexOf(' ') + 1)).trim();
-            console.log(newNickName);
             let newNickNameLower = newNickName.toLowerCase();
             let newNickNameUpper = newNickName.toUpperCase();
             if (newNickName === '' || newNickName === null || newNickName === undefined) return console.log('Error: nickname cannot be blank');
