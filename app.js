@@ -15,7 +15,6 @@ app.use(express.static(path.join(__dirname, 'dist')));
 io.on('connection', (socket) => {
     let user;
     socket.on('disconnect', () => {
-        console.log(user + ' has disconnected');
         let index = userArray.indexOf(user);
         if(index !== -1) userArray.splice(index, 1);
         noDupUserArray = userArray.filter((item, index, inputArray) => {
@@ -25,7 +24,6 @@ io.on('connection', (socket) => {
     });
     socket.on('user-connected', (data) => {
         user = data;
-        console.log(data + ' has connected');
             userArray.push(data);
             noDupUserArray = userArray.filter((item, index, inputArray) => {
                 return inputArray.indexOf(item) === index;

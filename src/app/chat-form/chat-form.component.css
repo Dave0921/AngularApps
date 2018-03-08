@@ -119,10 +119,3 @@ h5 {
 .btn-sm{
     height: calc(70px - 30px);
 }
-.show{
-    opacity: 1 !important;
-}
-.stepout{
-    opacity: 0;
-    transition: .5s ease-in-out all;
-}

@@ -2,7 +2,7 @@
   <div class="container-fluid" >
     <div class="row">
       <div class="col-sm-9">
-            <h5>You are: {{ nickName }}</h5>
+        <h5>You are: {{ nickName }}</h5>
         <div class="chatlistcontainer" #scrollMe [scrollTop]="scrollMe.scrollHeight">
           <div class="chatlist">
             <div class="row msg-container" #messages *ngFor="let message of messages">
@@ -18,8 +18,8 @@
               </div>
             </div>
           </div>
-          <div *ngIf="nickNameChange" [class.show]="nickNameChange" class="alert alert-success alert-dismissible stepout">
-              Your nickname is now: <strong>{{ nickName }}</strong>
+          <div *ngIf="nickNameChange" class="alert alert-success alert-dismissible stepout">
+            Your nickname is now: <strong>{{ nickName }}</strong>
           </div>
         </div>
       </div>
@@ -27,7 +27,7 @@
         <h5>Users Online:</h5>
         <div class="userlist">
           <div *ngFor="let user of users" >
-              <p>{{ user }}</p>
+            <p>{{ user }}</p>
           </div>
         </div>
       </div>

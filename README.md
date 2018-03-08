@@ -1,6 +1,6 @@
 # MyApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.6.8.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.2.
 This project is a chatroom that supports receiving, storing and sending messages between mutiple users.
 
 ## Development server

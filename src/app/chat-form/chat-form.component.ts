@@ -22,8 +22,8 @@ export class ChatFormComponent implements OnInit{
   usernameapiurl = 'https://uinames.com/api/?region=United%20states';
   disableScrollDown = false;
   nickNameColor: string = '#000000';
-  cookieValueNick: string = 'UNKNOWN';
-  cookieValueNickColor: string = 'UNKNOWN';
+  cookieValueNick: string;
+  cookieValueNickColor: string;
   nickNameChange = false;
   
   constructor(
