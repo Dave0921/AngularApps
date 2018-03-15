@@ -1,7 +1,7 @@
 import { AfterViewChecked, ElementRef, ViewChild, QueryList, ViewChildren, Component, OnInit, Input } from '@angular/core';
 import { WebsocketService } from '../websocket.service';
-import { ChatserviceService } from '../chatservice.service'
-import { Observable } from 'rxjs/Observable'
+import { ChatserviceService } from '../chatservice.service';
+import { Observable } from 'rxjs/Observable';
 import * as Rx from 'rxjs/Rx';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/catch';
@@ -12,7 +12,7 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './chat-form.component.html',
   styleUrls: ['./chat-form.component.css']
 })
-export class ChatFormComponent implements OnInit{
+export class ChatFormComponent implements OnInit {
   @ViewChildren('messages') private childMessages: QueryList<any>;
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   msgText: string;
@@ -21,42 +21,41 @@ export class ChatFormComponent implements OnInit{
   nickName: string;
   usernameapiurl = 'https://uinames.com/api/?region=United%20states';
   disableScrollDown = false;
-  nickNameColor: string = '#000000';
+  nickNameColor = '#000000';
   cookieValueNick: string;
   cookieValueNickColor: string;
   nickNameChange = false;
-  
+
   constructor(
     private _socketService: WebsocketService,
     private _chatSerivce: ChatserviceService,
     private _cookieService: CookieService
-  ){}
+  ) {}
 
-  ngOnInit(){
+  ngOnInit() {
     this.cookieValueNick = this._cookieService.get('Nickname');
     this.cookieValueNickColor = this._cookieService.get('Nicknamecolor');
     this.messages = new Array();
-    this.users = new Array();   
-    
-    if(this.cookieValueNick) {
+    this.users = new Array();
+
+    if (this.cookieValueNick) {
       this.nickName = this.cookieValueNick;
       this.nickNameColor = this.cookieValueNickColor;
       this._socketService.emit('user-connected', this.nickName);
-    }
-    else {
+    } else {
       // get random user nickname
       this._chatSerivce.getUserName(this.usernameapiurl).subscribe(
         data => {
           this.nickName = data.name + ' ' + data.surname;
           this._cookieService.set('Nickname', this.nickName );
-          this._cookieService.set('Nicknamecolor', this.nickNameColor)
+          this._cookieService.set('Nicknamecolor', this.nickNameColor);
           this._socketService.emit('user-connected', this.nickName);
         },
         err => {
           console.log('Error: could not get nickname');
           this.nickName = 'Guest' + Math.floor(Math.random() * 1000001);
           this._cookieService.set('Nickname', this.nickName );
-          this._cookieService.set('Nicknamecolor', this.nickNameColor)
+          this._cookieService.set('Nicknamecolor', this.nickNameColor);
           this._socketService.emit('user-connected', this.nickName);
         }
       );
@@ -69,9 +68,9 @@ export class ChatFormComponent implements OnInit{
     // when client has received message received confirmation, push msg into msg array
     this._socketService.on('message-received', (msg: any) => {
       this.messages.push(msg);
-      if (this.messages.length > 200){
+      if (this.messages.length > 200) {
         this.messages.shift();
-      };
+      }
     });
   }
   ngAfterViewInit() {
@@ -95,12 +94,12 @@ export class ChatFormComponent implements OnInit{
     this._socketService.on('change-nick', (data: any) => {
       // get users
       this.users = data.userarray;
-      let index = this.users.indexOf(this.nickName);
+      const index = this.users.indexOf(this.nickName);
       if (index === -1) {
         this.nickName = data.nick;
         this._cookieService.set( 'Nickname', this.nickName );
         this.nickNameChange = true;
-        setTimeout( () => {   
+        setTimeout( () => {
           this.nickNameChange = false;
         }, 4000);
       }
@@ -115,7 +114,7 @@ export class ChatFormComponent implements OnInit{
     } catch (err) {}
   }
   // send message
-  sendMsg(){
+  sendMsg() {
     const message = {
       text: this.msgText,
       date: Date.now(),
