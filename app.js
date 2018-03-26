@@ -12,6 +12,8 @@ const port = process.env.PORT || 4200;
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
+// TODO: Implement a database and store messages in the database; eg. MongoDB 
+
 io.on('connection', (socket) => {
     let user;
     socket.on('disconnect', () => {
