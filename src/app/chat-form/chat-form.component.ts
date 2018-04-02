@@ -1,8 +1,7 @@
-import { AfterViewChecked, ElementRef, ViewChild, QueryList, ViewChildren, Component, OnInit, Input } from '@angular/core';
+import { AfterViewChecked, ElementRef, ViewChild, QueryList, ViewChildren, Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { WebsocketService } from '../websocket.service';
 import { ChatserviceService } from '../chatservice.service';
 import { Observable } from 'rxjs/Observable';
-import * as Rx from 'rxjs/Rx';
 import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/catch';
 import { CookieService } from 'ngx-cookie-service';
@@ -12,12 +11,12 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './chat-form.component.html',
   styleUrls: ['./chat-form.component.css']
 })
-export class ChatFormComponent implements OnInit {
+export class ChatFormComponent implements OnInit, AfterViewInit {
   @ViewChildren('messages') private childMessages: QueryList<any>;
   @ViewChild('scrollMe') private myScrollContainer: ElementRef;
   msgText: string;
-  messages: Array<any>;
-  users: Array<any>;
+  messages: Array<any> = [];
+  users: Array<any> = [];
   nickName: string;
   usernameapiurl = 'https://uinames.com/api/?region=United%20states';
   disableScrollDown = false;
@@ -25,6 +24,8 @@ export class ChatFormComponent implements OnInit {
   cookieValueNick: string;
   cookieValueNickColor: string;
   nickNameChange = false;
+  errorMsg: string;
+  displayErrorMsg = false;
 
   constructor(
     private _socketService: WebsocketService,
@@ -35,8 +36,6 @@ export class ChatFormComponent implements OnInit {
   ngOnInit() {
     this.cookieValueNick = this._cookieService.get('Nickname');
     this.cookieValueNickColor = this._cookieService.get('Nicknamecolor');
-    this.messages = new Array();
-    this.users = new Array();
 
     if (this.cookieValueNick) {
       this.nickName = this.cookieValueNick;
@@ -92,7 +91,6 @@ export class ChatFormComponent implements OnInit {
     });
     // change nickName
     this._socketService.on('change-nick', (data: any) => {
-      // get users
       this.users = data.userarray;
       const index = this.users.indexOf(this.nickName);
       if (index === -1) {
@@ -103,8 +101,15 @@ export class ChatFormComponent implements OnInit {
           this.nickNameChange = false;
         }, 4000);
       }
-      // get chat log
       this.messages = data.messagearray;
+    });
+    // display error message
+    this._socketService.on('display-error', (data: any) => {
+      this.errorMsg = data;
+      this.displayErrorMsg = true;
+      setTimeout( () => {
+        this.displayErrorMsg = false;
+      }, 4000);
     });
   }
   // scroll to the bottom

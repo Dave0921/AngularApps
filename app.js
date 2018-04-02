@@ -13,6 +13,7 @@ const port = process.env.PORT || 4200;
 app.use(express.static(path.join(__dirname, 'dist')));
 
 // TODO: Implement a database and store messages in the database; eg. MongoDB 
+// TODO: Move random name generator to serverside
 
 io.on('connection', (socket) => {
     let user;
@@ -37,9 +38,9 @@ io.on('connection', (socket) => {
         // check if user wants to change nickname color
         if (data.text.startsWith('/nickcolor')) {
             let result = data.text.split(' ')[1];
-            if (result === undefined || result === '' || result === null) return console.log('Error: color cannot be blank');
+            if (result === undefined || result === '' || result === null) return io.emit('display-error', 'Error: color cannot be blank');
             if (result.match(/[0-9A-Fa-f]/g) === null || ((result.length !== 6 && result.length !== 3) || result.match(/[0-9A-Fa-f]/g).length < result.length)) {
-                return console.log('Error: Entered text must be a valid HEX color');
+                return io.emit('display-error', 'Error: Entered text must be a valid HEX color');
             } 
             let nickNameColor = '#' + result;
             msgArray.forEach((msg) => {
@@ -55,14 +56,14 @@ io.on('connection', (socket) => {
             let newNickName = data.text.substring((data.text.indexOf(' ') + 1)).trim();
             let newNickNameLower = newNickName.toLowerCase();
             let newNickNameUpper = newNickName.toUpperCase();
-            if (newNickName === '' || newNickName === null || newNickName === undefined) return console.log('Error: nickname cannot be blank');
+            if (newNickName === '' || newNickName === null || newNickName === undefined) return io.emit('display-error', 'Error: nickname cannot be blank');
             for (let i =0; i<newNickName.length; i++) {
                 if (newNickNameLower[i] === newNickNameUpper[i] && isNaN(newNickNameLower[i]) === true) {
-                    return console.log('Error: nickname cannot contain special characters');
+                    return io.emit('display-error', 'Error: nickname cannot contain special characters');
                 }
             };
             if (userArray.includes(newNickName)) {
-                return console.log('Error: nickname already exists');
+                return io.emit('display-error', 'Error: nickname already exists');
             }
             msgArray.forEach((msg) => {
                 if (msg.nickname === data.nickname) {
