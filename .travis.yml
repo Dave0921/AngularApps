@@ -22,4 +22,4 @@ deploy:
     on:
         branch: master # Build only from master
     local_dir: dist # Only copy the dist contents
-    fqdn: dave0921.github.io/AngularApps
+    fqdn: dave0921.github.io
