@@ -61,8 +61,8 @@ export class ChatFormComponent implements OnInit, AfterViewInit {
     }
     // when client has received user connected confirmation, get array of messages and users from server
     this._socketService.on('user-connected-received', (data: any) => {
-      this.messages = data.messagearray;
-      this.users = data.userarray;
+      this.messages = data.messageArray;
+      this.users = data.userArray;
     });
     // when client has received message received confirmation, push msg into msg array
     this._socketService.on('message-received', (msg: any) => {
