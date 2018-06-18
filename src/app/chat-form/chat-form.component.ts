@@ -1,8 +1,6 @@
-import { AfterViewChecked, ElementRef, ViewChild, QueryList, ViewChildren, Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { ElementRef, ViewChild, QueryList, ViewChildren, Component, OnInit, AfterViewInit } from '@angular/core';
 import { WebsocketService } from '../websocket.service';
 import { ChatserviceService } from '../chatservice.service';
-import { Observable } from 'rxjs/Observable';
-import { HttpClient } from '@angular/common/http';
 import 'rxjs/add/operator/catch';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -18,7 +16,7 @@ export class ChatFormComponent implements OnInit, AfterViewInit {
   messages: Array<any> = [];
   users: Array<any> = [];
   nickName: string;
-  usernameapiurl = 'https://uinames.com/api/?region=United%20states';
+  usernameApiUrl = 'https://uinames.com/api/?region=United%20states';
   disableScrollDown = false;
   nickNameColor = '#000000';
   cookieValueNick: string;
@@ -28,44 +26,44 @@ export class ChatFormComponent implements OnInit, AfterViewInit {
   displayErrorMsg = false;
 
   constructor(
-    private _socketService: WebsocketService,
-    private _chatSerivce: ChatserviceService,
-    private _cookieService: CookieService
+    private websocketService: WebsocketService,
+    private chatService: ChatserviceService,
+    private cookieService: CookieService
   ) {}
 
   ngOnInit() {
-    this.cookieValueNick = this._cookieService.get('Nickname');
-    this.cookieValueNickColor = this._cookieService.get('Nicknamecolor');
+    this.cookieValueNick = this.cookieService.get('Nickname');
+    this.cookieValueNickColor = this.cookieService.get('Nicknamecolor');
 
     if (this.cookieValueNick) {
       this.nickName = this.cookieValueNick;
       this.nickNameColor = this.cookieValueNickColor;
-      this._socketService.emit('user-connected', this.nickName);
+      this.websocketService.emit('user-connected', this.nickName);
     } else {
       // get random user nickname
-      this._chatSerivce.getUserName(this.usernameapiurl).subscribe(
+      this.chatService.getUserName(this.usernameApiUrl).subscribe(
         data => {
           this.nickName = data.name + ' ' + data.surname;
-          this._cookieService.set('Nickname', this.nickName );
-          this._cookieService.set('Nicknamecolor', this.nickNameColor);
-          this._socketService.emit('user-connected', this.nickName);
+          this.cookieService.set('Nickname', this.nickName );
+          this.cookieService.set('Nicknamecolor', this.nickNameColor);
+          this.websocketService.emit('user-connected', this.nickName);
         },
         err => {
           console.log('Error: could not get nickname');
           this.nickName = 'Guest' + Math.floor(Math.random() * 1000001);
-          this._cookieService.set('Nickname', this.nickName );
-          this._cookieService.set('Nicknamecolor', this.nickNameColor);
-          this._socketService.emit('user-connected', this.nickName);
+          this.cookieService.set('Nickname', this.nickName );
+          this.cookieService.set('Nicknamecolor', this.nickNameColor);
+          this.websocketService.emit('user-connected', this.nickName);
         }
       );
     }
     // when client has received user connected confirmation, get array of messages and users from server
-    this._socketService.on('user-connected-received', (data: any) => {
+    this.websocketService.on('user-connected-received', (data: any) => {
       this.messages = data.messageArray;
       this.users = data.userArray;
     });
     // when client has received message received confirmation, push msg into msg array
-    this._socketService.on('message-received', (msg: any) => {
+    this.websocketService.on('message-received', (msg: any) => {
       this.messages.push(msg);
       if (this.messages.length > 200) {
         this.messages.shift();
@@ -76,26 +74,26 @@ export class ChatFormComponent implements OnInit, AfterViewInit {
     // when list of messages changes, scroll to the last message
     this.childMessages.changes.subscribe(this.scrollToBottom);
     // when client has received user disconnected confirmation, remove disconnected user
-    this._socketService.on('user-disconnect', (userArray: any) => {
+    this.websocketService.on('user-disconnect', (userArray: any) => {
       this.users = userArray;
     });
     // change nickName color
-    this._socketService.on('change-nick-color', (data: any) => {
+    this.websocketService.on('change-nick-color', (data: any) => {
       // get chat log
       this.messages = data.messagearray;
       // change nickName color if current client's nickname === nickname sent by server
       if (data.msg.nickname === this.nickName) {
         this.nickNameColor = data.msg.nicknamecolor;
-        this._cookieService.set('Nicknamecolor', this.nickNameColor);
+        this.cookieService.set('Nicknamecolor', this.nickNameColor);
       }
     });
     // change nickName
-    this._socketService.on('change-nick', (data: any) => {
+    this.websocketService.on('change-nick', (data: any) => {
       this.users = data.userarray;
       const index = this.users.indexOf(this.nickName);
       if (index === -1) {
         this.nickName = data.nick;
-        this._cookieService.set( 'Nickname', this.nickName );
+        this.cookieService.set( 'Nickname', this.nickName );
         this.nickNameChange = true;
         setTimeout( () => {
           this.nickNameChange = false;
@@ -104,7 +102,7 @@ export class ChatFormComponent implements OnInit, AfterViewInit {
       this.messages = data.messagearray;
     });
     // display error message
-    this._socketService.on('display-error', (data: any) => {
+    this.websocketService.on('display-error', (data: any) => {
       this.errorMsg = data;
       this.displayErrorMsg = true;
       setTimeout( () => {
@@ -126,7 +124,7 @@ export class ChatFormComponent implements OnInit, AfterViewInit {
       nickname: this.nickName,
       nicknamecolor: this.nickNameColor
     };
-    this._socketService.emit('send-message', message);
+    this.websocketService.emit('send-message', message);
     this.msgText = '';
   }
 }
