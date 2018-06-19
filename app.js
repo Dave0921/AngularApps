@@ -8,7 +8,6 @@ const crypto = require('crypto');
 
 let msgArray = [];
 let userArray = [];
-let noDupUserArray = [];
 
 const port = process.env.PORT || 4200;
 
