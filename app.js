@@ -4,6 +4,7 @@ const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io', { rememberTransport: false, transports: ['WebSocket', 'Flash Socket', 'AJAX long-polling'] })(server);
 const MongoClient = require('mongodb').MongoClient;
+const crypto = require('crypto');
 
 let msgArray = [];
 let userArray = [];
@@ -23,17 +24,14 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         let index = userArray.indexOf(user);
         if(index !== -1) userArray.splice(index, 1);
-        noDupUserArray = userArray.filter((item, index, inputArray) => {
+        userArray = userArray.filter((item, index, inputArray) => {
             return inputArray.indexOf(item) === index;
         });
-        io.emit('user-disconnect', noDupUserArray);
+        io.emit('user-disconnect', userArray);
     });
     socket.on('user-connected', (data) => {
         user = data;
-        userArray.push(data);
-        noDupUserArray = userArray.filter((item, index, inputArray) => {
-            return inputArray.indexOf(item) === index;
-        });
+        if (userArray.indexOf(user) === -1) userArray.push(user);
         // Store messages in local MongoDB messages collection
         let database;
         MongoClient.connect(mongodbUrl).then((db) => {
@@ -42,7 +40,7 @@ io.on('connection', (socket) => {
             return dbo.collection('messages').find({}).toArray();
         }).then((items) => {
             msgArray = items;
-            io.emit('user-connected-received', {messageArray: items, userArray: noDupUserArray});
+            io.emit('user-connected-received', {messageArray: items, userArray: userArray});
         }).then(() => {
             database.close(true);
         }).catch(err => {
@@ -108,11 +106,8 @@ io.on('connection', (socket) => {
                     userArray[i] = newNickName;
                 }
             });
-            noDupUserArray = userArray.filter((item, index, inputArray) => {
-                return inputArray.indexOf(item) === index;
-            });
             user = newNickName;
-            io.emit('change-nick', {nick: newNickName, messagearray: msgArray, userarray: noDupUserArray});
+            io.emit('change-nick', {nick: newNickName, messagearray: msgArray, userarray: userArray});
             // Store nickname change into local MongoDB messages collection
             const query = { nickname: data.nickname};
             const newNickNameValue = { $set: {nickname: newNickName} };
@@ -159,3 +154,7 @@ io.on('connection', (socket) => {
 server.listen(port,() => {
     console.log('Listening on port ' + port);
 });
+
+function generateRandomId() {
+    return crypto.randomBytes(16).toString('hex');
+}
