@@ -6,7 +6,7 @@
   "scripts": {
     "ng": "ng",
     "build": "ng build --prod",
-    "start": "node app.js",
+    "start": "ng build && node app.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
